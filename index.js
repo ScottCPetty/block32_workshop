@@ -22,8 +22,12 @@ app.get("/api/flavors", async (req, res, next) => {
 // Return single flavor
 app.get("/api/flavors/:id", async (req, res, next) => {
   try {
-    const SQL = ``;
-    const response = await client.query(SQL);
+    const SQL = `
+        SELECT * from flavors
+        WHERE id=$1
+    `;
+    const response = await client.query(SQL, [req.params.id]);
+    res.send(response.rows[0])
   } catch (error) {
     console.log(error);
   }
