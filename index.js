@@ -31,8 +31,16 @@ app.get("/api/flavors/:id", async (req, res, next) => {
 // Create new flavor
 app.post("/api/flavors", async (req, res, next) => {
   try {
-    const SQL = ``;
-    const response = await client.query(SQL);
+    const SQL = `
+        INSERT INTO flavors(name, is_favorite)
+        VALUES ($1, $2)
+        RETURNING *
+    `;
+    const response = await client.query(SQL, [
+      req.body.name,
+      req.body.is_favorite,
+    ]);
+    res.send(response.rows[0]);
   } catch (error) {
     console.log(error);
   }
