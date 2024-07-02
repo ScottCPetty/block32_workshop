@@ -61,8 +61,17 @@ app.delete("/api/flavors/:id", async (req, res, next) => {
 // Update flavor
 app.put("/api/flavors/:id", async (req, res, next) => {
   try {
-    const SQL = ``;
-    const response = await client.query(SQL);
+    const SQL = `
+        UPDATE flavors
+        SET name=$1, is_favorite=$2, updated_at=now()
+        WHERE id=$3 RETURNING *
+    `;
+    const response = await client.query(SQL, [
+      req.body.name,
+      req.body.is_favorite,
+      req.params.id,
+    ]);
+    res.send(response.rows[0]);
   } catch (error) {
     console.log(error);
   }
