@@ -5,6 +5,57 @@ const client = new pg.Client(
 );
 const app = express();
 
+app.use(express.json());
+app.use(require("morgan")("dev"));
+// Return array of flavors
+app.get("/api/flavors", async (req, res, next) => {
+  try {
+    const SQL = `
+        SELECT * from flavors ORDER BY created_at DESC;
+    `;
+    const response = await client.query(SQL);
+    res.send(response.rows);
+  } catch (error) {
+    console.log(error);
+  }
+});
+// Return single flavor
+app.get("/api/flavors/:id", async (req, res, next) => {
+  try {
+    const SQL = ``;
+    const response = await client.query(SQL);
+  } catch (error) {
+    console.log(error);
+  }
+});
+// Create new flavor
+app.post("/api/flavors", async (req, res, next) => {
+  try {
+    const SQL = ``;
+    const response = await client.query(SQL);
+  } catch (error) {
+    console.log(error);
+  }
+});
+// Delete flavor
+app.delete("/api/flavors/:id", async (req, res, next) => {
+  try {
+    const SQL = ``;
+    const response = await client.query(SQL);
+  } catch (error) {
+    console.log(error);
+  }
+});
+// Update flavor
+app.put("/api/flavors/:id", async (req, res, next) => {
+  try {
+    const SQL = ``;
+    const response = await client.query(SQL);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 async function init() {
   await client.connect();
   console.log("connected to database");
@@ -26,5 +77,7 @@ async function init() {
   `;
   await client.query(SQL);
   console.log("data seeded");
+  const port = process.env.PORT || 3000;
+  app.listen(port, () => console.log(`listening on port ${port}`));
 }
 init();
